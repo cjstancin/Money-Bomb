@@ -93,6 +93,7 @@ class Tutorial < Gosu::Window
         @background_image.draw(0, 0, ZOrder::BACKGROUND)
         @font_UI.draw_text("Score: #{@player.score}", 10 , 0, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
         @font_UI.draw_text("Lives: #{@player.lives}", 10 , 15, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
+        @font_UI.draw_text("Click Esc to quit", 500 , 0, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
         if @player.lives <= 0
             @font.draw_text("
             GAME OVER 
