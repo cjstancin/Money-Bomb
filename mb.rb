@@ -24,7 +24,12 @@ class Tutorial < Gosu::Window
         @bomb = Gosu::Image.new("bomb.png")
         @bombs = Array.new
 
-        @font = Gosu::Font.new(20)
+        @music = Gosu::Song.new("music.wav")
+
+        @lose = Gosu::Song.new("death.wav")
+
+        @font = Gosu::Font.new(10)
+        @font_UI = Gosu::Font.new(20)
     end
     def update
         if Gosu.button_down? Gosu::KB_A or Gosu::button_down? Gosu::GP_LEFT
@@ -73,6 +78,7 @@ class Tutorial < Gosu::Window
             @bombs.each { |bomb| bomb.fall}
             @player.collect_bombs(@bombs)
             @player.collect_bcoin(@bcoins)
+            @music.play
         end
     end
 
@@ -85,10 +91,15 @@ class Tutorial < Gosu::Window
         end
         @ground.draw(0, 430, ZOrder::GROUND)
         @background_image.draw(0, 0, ZOrder::BACKGROUND)
-        @font.draw_text("Score: #{@player.score}", 10 , 0, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
-        @font.draw_text("Lives: #{@player.lives}", 10 , 15, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
+        @font_UI.draw_text("Score: #{@player.score}", 10 , 0, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
+        @font_UI.draw_text("Lives: #{@player.lives}", 10 , 15, ZOrder::UI, 1.0, 1.0, Gosu::Color::YELLOW)
         if @player.lives <= 0
-            @font.draw_text("GAME OVER, FINAL SCORE: #{@player.score}", 0, 240, ZOrder::UI, 2.0, 10.0, Gosu::Color::WHITE)
+            @font.draw_text("
+            GAME OVER 
+            CLICK SPACE TO RESTART
+            CLICK ESC TO LEAVE 
+            FINAL SCORE: #{@player.score}", 150, 0, ZOrder::UI, 2.0, 10.0, Gosu::Color::WHITE)
+            @lose.play
         end
     end
 end
@@ -200,7 +211,7 @@ class BCoin
         @picture = picture
         @x = rand * 640
         @y = 0
-        @vel_y = (rand(4..8))
+        @vel_y = (rand(8..10))
     end
 
     def draw
